@@ -36,7 +36,7 @@ This document describes how our group works together on this repository.
 - Each PR needs **at least one approving review from another group member** before merging.
 - CI must pass (build + all tests green) before merging.
 - The reviewer checks: the code builds, tests pass, the change matches the Issue, and the code is readable.
-- Merge using **Squash and merge** or **Merge commit** (we agree to use: ________).
+- Merge using **Merge commit**.
 - Delete the branch after merging.
 
 ## 5. Keeping up to date
