@@ -22,6 +22,7 @@ if(BUILD_TESTS)
 
   enable_testing()
   add_executable(game_tests tests/test_game.cpp game.cpp)
+  target_include_directories(game_tests PRIVATE ${CMAKE_SOURCE_DIR})
   target_link_libraries(game_tests PRIVATE GTest::gtest_main)
 
   include(GoogleTest)
