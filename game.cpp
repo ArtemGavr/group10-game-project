@@ -78,16 +78,21 @@ void gameLoop(int board[M][N], bool cont, int players, int M, int N) {
         p--;
       }
       winner = p;
-    }
-    int check = parseBoard(board);
-    if (check != 0) {
-      if(check == -1){
-        std::cout << "The Game has ended in a Draw." << std::endl;
+      int check = parseBoard(board);
+      if (check != 0) {
+        if(check == -1){
+          std::cout << "The Game has ended in a Draw." << std::endl;
+          cont = false;
+          break;
+        }
+        else{
+          std::cout << "Player " << winner << " has won!" << std::endl;
+          cont = false;
+          break;
+          
+        }
       }
-      else{
-        std::cout << "Player " << winner << " has won!" << std::endl;
-        cont = false;
-      }
     }
+    
   } while (cont);
 }
