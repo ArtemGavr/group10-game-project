@@ -42,3 +42,11 @@
 
 /.idea
 .idea
+
+# Build output (CMake / CLion)
+build/
+cmake-build-*/
+
+# The compiled game binary
+/game
+/game_tests
