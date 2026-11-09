@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include <iostream>
+#include <limits>
 
 void initBoard(int board[M][N], int M, int N) {
   for (int m = 0; m < M; m++) {
@@ -12,81 +13,81 @@ void initBoard(int board[M][N], int M, int N) {
 
 int parseBoard(int board[M][N]) {
   /*
-   * This function is where you should define your win conditions.
-   * If player p in [1,...,P] has won, then you should return p; otherwise 0.
-   * If you find yourself with a great deal of spare time you might try
-   * rendering the board to the terminal here, too.
+   * Returns 1 if any player has three matching non-empty cells in a line
+   * (the caller works out who won from whose turn it was), -1 if the board is
+   * full with no winner (a draw), and 0 if the game is still in progress.
    */
 
-  // Check all verticals 
+  // Check all rows
   for (int m = 0; m < M; m++) {
-    if (board[m][0] == board[m][1] && board[m][1] == board[m][2] && board[m][0] != 0 ){
-      //std::cout<<"Verticals ";
+    if (board[m][0] == board[m][1] && board[m][1] == board[m][2] && board[m][0] != 0) {
       return 1;
-      
     }
   }
-  //Check all horizontals
+
+  // Check all columns
   for (int n = 0; n < N; n++) {
-    if (board[0][n] == board[1][n] && board[1][n] == board[2][n] && board[0][n] != 0 ){
-      //std::cout<<"horizontals ";
+    if (board[0][n] == board[1][n] && board[1][n] == board[2][n] && board[0][n] != 0) {
       return 1;
-      
     }
   }
 
-  //Check Diagonals
-  if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != 0 ){
-    //std::cout<<"diagonals";
-    return 1;
-    
-  }
-
-  if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] != 0 ){
-    //std::cout<<"diagonals";
+  // Check diagonals
+  if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != 0) {
     return 1;
   }
 
-  //Check tie
-  bool tieCheck = true;
-  for(int m = 0; m<M; m++){
-    for(int n = 0; n<N; n++){
-      if (board[m][n] == 0){
-        tieCheck = false;
+  if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] != 0) {
+    return 1;
+  }
+
+  // Check tie (only reached if nobody has won)
+  for (int m = 0; m < M; m++) {
+    for (int n = 0; n < N; n++) {
+      if (board[m][n] == 0) {
+        return 0;
       }
     }
   }
-  if (tieCheck){
-    return -1;
-  }
-  
-  return 0;
+  return -1;
 }
 
 void gameLoop(int board[M][N], bool cont, int players, int M, int N) {
-  int winner;
   int m, n;
   do {
     for (int p = 1; p <= players; ++p) {
       std::cout << "Player " << p << " place:";
-      std::cin >> m >> n;
-      if (board[m][n] == 0) {
-        std::cout << p << " at (" << m << ", " << n << ")." << std::endl;
-        board[m][n] = p+1;
-      } else {
+      if (!(std::cin >> m >> n)) {
+        if (std::cin.eof()) {
+          std::cout << "Input ended; game abandoned." << std::endl;
+          return;
+        }
+        // Non-numeric input: discard the line and let the same player retry.
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Illegal move!" << std::endl;
         p--;
+        continue;
       }
-      winner = p;
-    }
-    int check = parseBoard(board);
-    if (check != 0) {
-      if(check == -1){
+      if (m < 0 || m >= M || n < 0 || n >= N || board[m][n] != 0) {
+        std::cout << "Illegal move!" << std::endl;
+        p--;
+        continue;
+      }
+
+      std::cout << p << " at (" << m << ", " << n << ")." << std::endl;
+      board[m][n] = p + 1;
+
+      int check = parseBoard(board);
+      if (check == -1) {
         std::cout << "The Game has ended in a Draw." << std::endl;
-      }
-      else{
-        std::cout << "Player " << winner << " has won!" << std::endl;
         cont = false;
+        break;
+      }
+      if (check != 0) {
+        std::cout << "Player " << p << " has won!" << std::endl;
+        cont = false;
+        break;
       }
     }
   } while (cont);
