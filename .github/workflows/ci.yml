@@ -1,0 +1,82 @@
+name: CI
+
+# Run on every push to any branch, and on every pull request into main,
+# so a PR can't be merged with a broken build or failing tests.
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:   # manual reruns from the Actions tab
+
+jobs:
+  # TEST BUILD: Debug + tests (GoogleTest's main)
+  test-build:
+    name: Test build (${{ matrix.os }} / ${{ matrix.compiler }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            compiler: gcc
+            cxx: g++
+          - os: ubuntu-latest
+            compiler: clang
+            cxx: clang++
+          - os: macos-latest      # most of the group develops on Macs
+            compiler: apple-clang
+            cxx: clang++
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Configure test build
+        env:
+          CXX: ${{ matrix.cxx }}
+        run: cmake -S . -B build-test -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON
+
+      - name: Build
+        run: cmake --build build-test --parallel
+
+      - name: Run unit tests
+        run: ctest --test-dir build-test --output-on-failure
+
+  # RELEASE BUILD: optimised game only, no tests
+  release-build:
+    name: Release build (ubuntu / gcc)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Configure release build
+        run: cmake -S . -B build-release -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF
+
+      - name: Build
+        run: cmake --build build-release --parallel
+
+      - name: Check the game was built and the tests were left out
+        run: |
+          test -x build-release/game
+          test ! -e build-release/game_tests
+          echo "Release build OK: game present, no test binary."
+
+  # LINT: clang-tidy reports warnings (does not fail the run)
+  lint:
+    name: clang-tidy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install clang-tidy
+        run: sudo apt-get update && sudo apt-get install -y clang-tidy
+
+      - name: Configure (generates compile_commands.json for clang-tidy)
+        run: cmake -S . -B build-lint -DBUILD_TESTS=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+      - name: Run clang-tidy on game sources
+        # Warnings are reported but don't fail the build
+        run: clang-tidy -p build-lint game.cpp main.cpp || true
