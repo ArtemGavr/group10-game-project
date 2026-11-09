@@ -32,6 +32,7 @@ void gameLoop(int board[M][N], bool cont, int players, int M, int N) {
         board[m][n] = p;
       } else {
         std::cout << "Illegal move!" << std::endl;
+        p--;
       }
     }
     winner = parseBoard(board);
