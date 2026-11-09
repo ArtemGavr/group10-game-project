@@ -1,13 +1,12 @@
 # _Cybergame Name_
 
 ## Authors:
-| Username | Name |
-|----------|------|
-| _username1_ | _name1_ |
-| _username2_ | _name2_ |
-| _username3_ | _name3_ |
-| _username4_ | _name4_ |
-| _username5_ | _name5_ |
+| Username        | Name               |
+|-----------------|--------------------|
+| amelie-major 	  | Amelie Major       |
+| ArtemGavr 	  | Artem Gavryushenko |
+| PhoebeJohnstone | Phoebe Johnstone   |
+| cshumate2114    | Connor Shumate     |
 
 ## Win Conditions:
 _Describe the win conditions for either player (i.e. the × or ○ player)_
