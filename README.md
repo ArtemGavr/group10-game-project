@@ -19,7 +19,7 @@ Run the following commands from the root directory of the project:
 
 cmake -S . -B build-test -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON
 cmake --build build-test
-ctest --test-dir build-test --output-on-failur
+ctest --test-dir build-test --output-on-failure
 
 ### Release Build:
 
