@@ -8,7 +8,7 @@ int main(void) {
   bool cont = true;
   //if (argc < 1) {
     //return EXIT_FAILURE;
-  std::cout << "Initialising game...";
+  std::cout << "Initialising game...\n";
   P = 2;
   int board[M][N];
   initBoard(board, M, N);

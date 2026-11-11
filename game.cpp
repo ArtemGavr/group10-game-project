@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <limits>
+#include <string>
 
 void initBoard(int board[M][N], int M, int N) {
   for (int m = 0; m < M; m++) {
@@ -9,6 +10,52 @@ void initBoard(int board[M][N], int M, int N) {
       board[m][n] = 0;
     }
   }
+}
+
+std::string boardDisp(int board[M][N]){
+    /*std::string message;
+    message = "----- ----- ----- \n|  ";
+    for(int m = 0; m<3; m++){
+      for(int n = 0; n<3; n++){
+        if (board[m][n] != 0){
+          if(board[m][n] == 1){
+            message += "  X";
+          }
+          else{
+            message += "  O";
+          }
+        }
+        else{
+          message+= "   ";
+        }
+        message +="  |\n";
+      }
+      message +="\n";
+      message = "----- ----- ----- \n|  ";
+    }
+    std::cout<<message;*/
+
+    std::string message = "----- ----- ----- \n|";
+    for(int m = 0; m<3; m++){
+      for(int n = 0; n<3; n++){
+        if (board[m][n] != 0){
+          if(board[m][n] == 2){
+            message += "  X";
+          }
+          else{
+            message += "  0";
+          }
+        }
+        else{
+          message += "   ";
+        }
+        message += "  |";
+      }
+      message += "\n";
+      message += "----- ----- ----- \n|";
+    }
+
+    return message;
 }
 
 int parseBoard(int board[M][N]) {
@@ -56,6 +103,7 @@ void gameLoop(int board[M][N], bool cont, int players, int M, int N) {
   int m, n;
   do {
     for (int p = 1; p <= players; ++p) {
+      std::cout<<boardDisp(board);
       std::cout << "Player " << p << " place:";
       if (!(std::cin >> m >> n)) {
         if (std::cin.eof()) {
@@ -91,4 +139,5 @@ void gameLoop(int board[M][N], bool cont, int players, int M, int N) {
       }
     }
   } while (cont);
+  std::cout<<boardDisp(board);
 }
