@@ -44,6 +44,7 @@
 .idea
 
 # Build output (CMake / CLion)
+build-*/
 build/
 cmake-build-*/
 
