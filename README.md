@@ -23,4 +23,31 @@ The game checks for a winning line after every valid move.
 - If all nine cells are filled and neither player has won, the game ends in a draw.
 
 ## Build Instructions:
-_Describe how a new user should build the software_
+### Test Mode:
+The Debug build compiles the game with debugging information and enables automated tests using GoogleTest.
+
+Run the following commands from the root directory of the project:
+
+cmake -S . -B build-test -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON
+cmake --build build-test
+ctest --test-dir build-test --output-on-failure
+
+### Release Build:
+
+The Release build compiles an optimised version of the game without automated tests.
+
+Run:
+
+cmake -S . -B build-release -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF
+cmake --build build-release
+
+### Running the Game:
+Once the Release build has completed, run the executable.
+
+**Windows (PowerShell):**
+
+.\build-release\game.exe
+
+**Linux/macOS:**
+
+./build-release/game
