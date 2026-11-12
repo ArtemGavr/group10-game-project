@@ -51,3 +51,12 @@ Once the Release build has completed, run the executable.
 **Linux/macOS:**
 
 ./build-release/game
+
+## References
+
+- GeeksforGeeks. *Tic Tac Toe Game in C++*. https://www.geeksforgeeks.org/cpp/tic-tac-toe-game-in-cpp/
+- GeeksforGeeks. *GTest Framework*. https://www.geeksforgeeks.org/software-testing/gtest-framework/
+- Tutorialspoint. *GTest Tutorial*. https://www.tutorialspoint.com/gtest/index.htm
+- YouTube. *[Video title]*. https://www.youtube.com/watch?v=16FI1-d2P4E
+- Kea Sigma Delta. *CMake Tutorial: Getting Started*. https://keasigmadelta.com/blog/cmake-tutorial-getting-started/
+- W3Schools. *Git CI/CD*. https://www.w3schools.com/git/git_cicd.asp
